@@ -33,8 +33,8 @@ const styles = theme => ({
 });
 
 const authSuccess = (response) => {
-	const { tokenId } = response;
-	fetchApi('/users/auth/google', { idToken: tokenId }, { 'Content-Type': 'application/json' }, 'post')
+	// const { tokenId } = response;
+	fetchApi('/users/auth/google', { idToken: "aaa.bbb.ccc" }, { 'Content-Type': 'application/json' }, 'post')
 		.then(authResponse => setSession(authResponse));
 };
 
@@ -96,15 +96,10 @@ class LandingPage extends React.Component {
 					<Button
 						color="primary"
 						variant="raised"
-						component={GoogleLogin}
-						clientId="96851996756-7lfcdrojvu63k0jcjsqma61jggd72uli.apps.googleusercontent.com"
-						cookiePolicy="single_host_origin"
-						scope="profile email"
-						onSuccess={(response) => {
+						onClick={() => {
 							this.setState({ loading: true });
-							authSuccess(response);
+							authSuccess();
 						}}
-						onFailure={authFailure}
 					>
             Sign In
 					</Button>
