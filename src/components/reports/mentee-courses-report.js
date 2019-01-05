@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import PropTypes from 'prop-types';
+import Link from 'next/link';
+
 import { withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,22 +15,26 @@ const styles = theme => ({
     width: '100%',
     marginTop: theme.spacing.unit * 2,
     overflowX: 'auto',
+    overflowY: 'auto',
     flexGrow:1,
     margin: '0 auto',
-    maxWidth: theme.spacing.unit * 140
+    maxWidth: theme.spacing.unit * 120,
   },
-  table: {
-
+  cell: {
+    padding: theme.spacing.unit,
+    "&:last-child":{
+      padding : theme.spacing.unit
+    }
   },
 });
 
 const courseStatus = (isEnrolled, isCourseCompleted) => {
   if (isCourseCompleted){
-    return "Complete";
+    return <img height="40" src="/static/icons/course-complete.png" alt="course-complete" />;
   } else if (isEnrolled) {
-    return "Enrolled";
+    return <img height="40" src="/static/icons/course-enrolled.png" alt="course-complete" />;
   } else {
-    return "Not-Enrolled";
+    return <img height="40" src="/static/icons/not-enrolled.png" alt="course-complete" />;
   }
 }
 
@@ -41,10 +47,10 @@ const MenteeCoursesReports = (props) => {
         <TableHead>
           <TableRow>
 
-            <TableCell variant={'head'}>Courses</TableCell>
+            <TableCell className={classes.cell} variant={'head'}>Courses</TableCell>
             {
               mentees.map((mentee, index) => (
-                <TableCell variant={'head'} key={index}>{mentee.name}</TableCell>
+                <TableCell className={classes.cell} variant={'head'} key={index}>{mentee.name}</TableCell>
               ))
             }
           </TableRow>
@@ -54,10 +60,16 @@ const MenteeCoursesReports = (props) => {
               coursesReports.map((courseReport, courseIndex) => {
                 return (
                   <TableRow key={courseIndex}>
-                    <TableCell variant={'head'}>{courseReport.courseName}</TableCell>
+                    <Link href={{
+                        pathname:`/reports/mentee-exercises?courseId=${courseReport.courseId}`
+                      }}>
+                      <TableCell className={classes.cell} variant={'head'}>
+                        {courseReport.courseName}
+                      </TableCell>
+                  </Link>
                     {
                       courseReport.students.map((student, studentIndex) => (
-                        <TableCell variant={'body'} key={studentIndex}>
+                        <TableCell className={classes.cell} variant={'body'} key={studentIndex}>
                           {courseStatus(student.isEnrolled, student.isCourseCompleted)}
                         </TableCell>
                       ))

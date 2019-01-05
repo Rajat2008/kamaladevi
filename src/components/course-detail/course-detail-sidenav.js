@@ -28,11 +28,11 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 
 import { withStyles } from "@material-ui/core/styles";
 
-import AlertNotification from "./alert-notification";
+import AlertNotification from "../alert-notification";
 
-import { getExerciseIdFromSlug } from '../services/utils';
-import { isEnrolled } from '../services/session';
-import { enrollCourseAPI } from '../services/api';
+import { getExerciseIdFromSlug } from '../../services/utils';
+import { isEnrolled } from '../../services/session';
+import { enrollCourseAPI } from '../../services/api';
 
 
 const styles = (theme) => {
@@ -178,7 +178,7 @@ class CourseDetailSideNav extends React.Component {
 		});
 	}
 
-	handleCloseSnackBar = () =>{
+	handleHideNotification = () =>{
 		this.setState({ showEnrolledNotification: false })
 	}
 
@@ -195,11 +195,11 @@ class CourseDetailSideNav extends React.Component {
 			loadExercise,
 			selectedExercise
 		} = this.props;
-		// console.log(selectedExercise);
+
 		//  getting exercises as an object because react/forbid-prop-types array in .eslintrc
 		const { exercises } = this.props;
 
-		const notifcationMessage = (!enrolled && showEnrolledNotification)?
+		const notifcationMessage = (enrolled && showEnrolledNotification)?
 																"You have enrolled in the course"
 																:"Kuch Error Ayi ha Enrolled nhi kar paye";
 
@@ -212,7 +212,7 @@ class CourseDetailSideNav extends React.Component {
 						message={notifcationMessage}
 						variant={"success"}
 						autoHideDuration={6000}
-						onClose={this.handleCloseSnackBar}
+						onClose={this.handleHideNotification}
 					/>
 				{!enrolled ?
 					<ExpansionPanel
@@ -224,8 +224,9 @@ class CourseDetailSideNav extends React.Component {
 							className={classes.enrollButton}
 							onClick={() => {
 								const { id } = Router.query;
-								enrollCourseAPI(id, success => this.setState({ enrolled: success,showEnrolledNotification:true }))
+								enrollCourseAPI(id, success => this.setState({ enrolled: success, showEnrolledNotification:true }))
 										.catch(error => {
+											console.log(error);
 											this.setState({
 												showEnrolledNotification:true
 											});
@@ -243,7 +244,7 @@ class CourseDetailSideNav extends React.Component {
 							>
 							<ExpansionPanelSummary>
 								<span>
-									{
+									{ // Name of the students who have completed the exercise.
 										selectedExercise.usersCompletedExercise.slice(0,3).map((user, index) => {
 											if (index ===  selectedExercise.usersCompletedExercise.slice(0,3).length-1){
 												return `${user.name} `

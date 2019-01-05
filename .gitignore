@@ -32,6 +32,9 @@ build/
 local.properties
 *.iml
 
+.vscode
+package-lock.json
+
 # node.js
 #
 node_modules/

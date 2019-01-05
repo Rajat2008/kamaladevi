@@ -97,7 +97,6 @@ class CourseList extends React.Component {
 			availableCourses: [],
 			// For future uses
 			enrolledCourses: [],
-			facilitatingCourses: [],
 			isAdmin: false
 		};
 	}
@@ -115,7 +114,7 @@ class CourseList extends React.Component {
 					const { jwt, user } = value;
 					fetchApi('/courses', {}, { Authorization: jwt })
 						.then((response) => {
-							// console.log(response);
+							console.log(response);
 							setEnrolledCourses(response);
 							this.setState({
 								prefetchedData: true,
@@ -142,7 +141,6 @@ class CourseList extends React.Component {
 		const {
 			availableCourses,
 			enrolledCourses,
-			facilitatingCourses,
 			prefetchedData,
 			editCourseSequence,
 			isAdmin
