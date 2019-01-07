@@ -121,6 +121,7 @@ const styles = theme => {
     }
   };
 };
+"https://github.com/khw1031/withUtterances/"
 
 const navigateToExercise = id => slug => {
   Router.push({
@@ -372,11 +373,7 @@ class CourseDetail extends React.Component {
               </Button>
             ) : null}
           </div>
-          <ReactUtterences
-            className={classes.utterances}
-            repo={"navgurukul/newton"}
-            type={"title"}
-          />
+
         </Grid>
         <Grid item xs={4} className={classes.sidebar}>
           <CourseDetailSideNav

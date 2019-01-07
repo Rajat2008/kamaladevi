@@ -26,6 +26,9 @@ const styles = theme => {
 	flex: {
 		flex: 1,
 	},
+	flex: {
+		flex: 12,
+	},
 	drawerPaper: {
    	width: drawerWidth,
 		zIndex: theme.zIndex.appBar - 1,
@@ -167,7 +170,12 @@ class Header extends React.Component {
 							</li>
 							<li className={classes.sideNavItem}>
 								<Link href='/assignment-review'>
-										<span>PeerReview</span>
+										<span>Peer Review</span>
+								</Link>
+							</li>
+							<li className={classes.sideNavItem}>
+								<Link href='/profile'>
+										<span>Edit Profile</span>
 								</Link>
 							</li>
 						</List>

@@ -25,6 +25,7 @@
     "markdown-it": "^8.4.1",
     "markdown-it-block-embed": "0.0.3",
     "markdown-it-highlightjs": "^3.0.0",
+    "material-ui-upload": "^1.2.1",
     "next": "^6.0.3",
     "prop-types": "^15.6.1",
     "react": "^16.4.1",
