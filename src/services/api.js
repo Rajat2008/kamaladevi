@@ -30,11 +30,13 @@ export const fetchApi = (endpoint, payload, headers, method = 'GET') => {
 					// throw response.statusText;
 				}
 			}
+			console.log(1)
 			return response.json();
 		})
 		.catch((error) => {
 			console.error(error);
-			throw error;
+			// throw error;
+			return Promise.reject(error);
 		});
 };
 
@@ -52,6 +54,7 @@ export const authenticatedFetchAPI = (endpoint, payload = {}, method = 'get') =>
 export const submitExerciseAPI = (courseId, exerciseId, notes) => authenticatedFetchAPI(`/courses/${courseId}/exercise/${exerciseId}/submission`, { notes }, 'post');
 
 export const getExerciseFromSlugAPI = (courseId, slug) => authenticatedFetchAPI(`/courses/${courseId}/exercise/getBySlug`, { slug });
+
 export const saveCoursesSequenceAPI = payload => authenticatedFetchAPI('/courses/sequenceNum', { courses: payload }, 'put');
 
 export const deleteCourseAPI = courseId => authenticatedFetchAPI(`/courses/${courseId}/delete`, {}, 'delete');
@@ -75,12 +78,17 @@ export const enrollCourseAPI = async (courseId, callBack) => authenticatedFetchA
 	});
 
 // Submit the feedback for student assignment
-export const reviewerFeedbackSubmissionAPI = (notes, isApprove, submissionId) => localforage.getItem('authResponse')
-	.then((value) => {
-		const { jwt } = value;
-		const payload = {
-			notes,
-			approved: isApprove,
-		};
-		return fetchApi(`/assignments/peerReview/${submissionId}`, payload, { Authorization: jwt }, 'put');
-	});
+export const reviewerFeedbackSubmissionAPI = (notes, isApprove, submissionId) => {
+	const payload = {
+		notes,
+		approved: isApprove,
+	};
+	return authenticatedFetchAPI(`/assignments/peerReview/${submissionId}`, payload, 'put');
+};
+
+export const courseCompletedAPI = (courseId, menteeId) => {
+	const payload = {
+		menteeId,
+	};
+	return authenticatedFetchAPI(`/courses/${courseId}/complete`, payload, 'post');
+};

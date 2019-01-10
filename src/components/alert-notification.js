@@ -20,6 +20,7 @@ const styles = theme => ({
 	root: {
 		flexGrow: 1,
 	},
+
 	success: {
 		backgroundColor: green[600],
 	},
@@ -32,6 +33,7 @@ const styles = theme => ({
 	warning: {
 		backgroundColor: amber[700],
 	},
+
 	icon: {
 		fontSize: 20,
 	},
@@ -54,6 +56,7 @@ const variantIcon = {
 	error: ErrorIcon,
 	info: InfoIcon,
 };
+
 
 const AlertNotification = (props) => {
 	const {

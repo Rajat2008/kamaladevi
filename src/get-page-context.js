@@ -6,6 +6,7 @@ import purple from '@material-ui/core/colors/purple';
 import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
 import blue from '@material-ui/core/colors/blue';
+import red from '@material-ui/core/colors/red';
 import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 
 
@@ -27,14 +28,14 @@ const theme = createMuiTheme({
 			dark: green[700],
 		},
 		warning: {
-			light: amber[300],
-			main: amber[500],
-			dark: amber[700],
+			light: amber.A300,
+			main: amber.A500,
+			dark: amber.A700,
 		},
 		info: {
-			light: blue[300],
-			main: blue[500],
-			dark: blue[700],
+			light: blue.A300,
+			main: blue.A500,
+			dark: blue.A700,
 		},
 	},
 	typography: {

@@ -183,32 +183,33 @@ const getMenteesReportSchema = (mentees, extraFields) => {
 };
 
 export const getMenteeCoursesTable = (coursesReport, mentees) => {
-	const coursesReportTable = [];
+	const reportTable = [];
 	const extraFields = {
-		isEnrolled: false,
-		isCourseCompleted: false,
+		menteeCourseStatus: 'unenroll',
+		completedSubmissions: 0,
 	};
+
 	// get a schema of mentees courses reports to display in each courses
-	const menteesCourseReportSchema = getMenteesReportSchema(mentees, extraFields);
+	const menteesReportSchema = getMenteesReportSchema(mentees, extraFields);
 
 	// update each and every courses
 	coursesReport.forEach((course) => {
 		const { studentEnrolled, ...courseDetails } = course;
 
 		// create a copy of schema for every courses
-		const courseReport = {
-			students: menteesCourseReportSchema.slice(),
+		const report = {
+			mentees: menteesReportSchema.slice(),
 			...courseDetails,
 		};
 
-		// update each schema with the current detail of the student
+		// updating the value for student who have status as enroll or completed.
 		studentEnrolled.forEach((mentee) => {
-			const { email } = mentee;
-			const menteeIndex = findObjectIndex(mentees, 'email', email);
-			courseReport.students[menteeIndex] = { ...mentee };
+			const { menteeEmail } = mentee;
+			const menteeIndex = findObjectIndex(mentees, 'email', menteeEmail);
+			report.mentees[menteeIndex] = { ...mentee };
 		});
-		coursesReportTable.push(courseReport);
+		reportTable.push(report);
 	});
-	// console.log(coursesReportTable);
-	return coursesReportTable;
+
+	return reportTable;
 };
