@@ -164,7 +164,7 @@ export const filterPendingAssignment = (assignments) => {
 
 
 // //////////////////////////////////////////////////////////
-const findObjectIndex = (array, key, value) => array.findIndex(element => element[key] === value);
+export const findObjectIndex = (array, key, value) => array.findIndex(element => element[key] === value);
 
 
 // to create a mentee schema row for Dashboard
@@ -172,9 +172,9 @@ const getMenteesReportSchema = (mentees, extraFields) => {
 	const menteesCourseReportSchema = [];
 	for (let i = 0; i < mentees.length; i += 1) {
 		const menteeCourseReportSchema = {
-			id: mentees[i].id,
-			name: mentees[i].name,
-			email: mentees[i].email,
+			menteeId: mentees[i].id,
+			menteeName: mentees[i].name,
+			menteeEmail: mentees[i].email,
 			...extraFields,
 		};
 		menteesCourseReportSchema.push(menteeCourseReportSchema);
@@ -213,3 +213,32 @@ export const getMenteeCoursesTable = (coursesReport, mentees) => {
 
 	return reportTable;
 };
+
+
+export const getMenteeExercisesTable = (exercisesReport, mentees) => {
+	const reportTable = [];
+
+	const extraFields = {
+		submissionId: null,
+		submissionState: 'open',
+		submissionCompleted: false,
+	};
+
+	const menteesReportSchema = getMenteesReportSchema(mentees, extraFields);
+	exercisesReport.forEach((exercise) =>{
+		const { submissions, ...exerciseDetails } = exercise;
+		const report = {
+			...exerciseDetails,
+			mentees: menteesReportSchema.slice(),
+		}
+
+		submissions.forEach((submission) => {
+			const { menteeEmail } = submission;
+			const menteeIndex = findObjectIndex(mentees, 'email', menteeEmail);
+			report.mentees[menteeIndex] = { ...submission };
+		});
+
+		reportTable.push(report);
+	});
+	return reportTable;
+}

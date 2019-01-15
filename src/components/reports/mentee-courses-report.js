@@ -13,7 +13,8 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { withStyles } from '@material-ui/core/styles';
 
 import AlertNotification from '../alert-notification';
-import { courseCompletedAPI } from '../../services/api';
+import { courseCompletedAPI } from '../../services/api';		
+import { findObjectIndex } from '../../services/utils';
 
 const styles = theme => ({
 	root: {
@@ -23,27 +24,34 @@ const styles = theme => ({
 		overflowY: 'auto',
 		flexGrow: 1,
 		margin: '0 auto',
-		maxWidth: theme.spacing.unit * 120,
+		maxWidth: theme.spacing.unit * 100,
 	},
-	cell: {
+	tableCell: {
 		padding: theme.spacing.unit,
+		maxWidth: theme.spacing.unit * 5,
 		'&:last-child': {
+			maxWidth: theme.spacing.unit * 5,
 			padding: theme.spacing.unit,
 		},
 	},
 	green: {
-		background: '#64dd17',
+		color: '#64dd17',
+		maxWidth: theme.spacing.unit * 8,
 	},
 	red: {
-		background: '#d50000',
+		color: '#d50000',
+		maxWidth: theme.spacing.unit * 8,
 	},
 	yellow: {
-		background: '#ffd600',
+		color: '#ffd600',
+		maxWidth: theme.spacing.unit * 8,
 	},
 	grey: {
-		background: '#757575',
+		color: '#757575',
+		maxWidth: theme.spacing.unit * 8,
 	},
 });
+
 const getProgressColor = (percentage) => {
 	if (percentage > 70) {
 		return 'green';
@@ -67,7 +75,7 @@ const courseStatus = (courseReport, mentee, classes) => {
 					variant="determinate"
 					value={100}
 					className={classes.green}
-					title={progressPercentage}
+					title={`${progressPercentage}%`}
 				/>
 			);
 		case 'enroll':
@@ -76,7 +84,7 @@ const courseStatus = (courseReport, mentee, classes) => {
 					variant="determinate"
 					value={progressPercentage}
 					className={classes[color]}
-					title={progressPercentage}
+					title={`${progressPercentage}%`}
 				/>
 			);
 		default:
@@ -85,7 +93,7 @@ const courseStatus = (courseReport, mentee, classes) => {
 					variant="determinate"
 					value={progressPercentage}
 					className={classes.grey}
-					title={progressPercentage}
+					title={`${progressPercentage}%`}
 				/>
 			);
 	}
@@ -107,8 +115,16 @@ class MenteeCoursesReports extends React.Component {
 	updateCourseStatus = (courseId, menteeEmail) => {
 		// update the course Status
 		console.log(courseId, menteeEmail);
+		// get the course report out of the state so we can change it.
+		const { coursesReports } = this.state;
+		const courseIndex = findObjectIndex(coursesReports, 'courseId', courseId);
+		const menteeIndex = findObjectIndex(coursesReports[courseIndex].mentees, 'menteeEmail', menteeEmail);
+		coursesReports[courseIndex].mentees[menteeIndex] = 'completed';
+		// update the state as need to maintain the change some where and re-render component
+		this.setState({
+			coursesReports,
+		});
 	}
-
 	courseCompleted = (courseReport, mentee) => {
 		const { menteeId, menteeName } = mentee;
 		const { courseName, courseId } = courseReport;
@@ -150,6 +166,7 @@ class MenteeCoursesReports extends React.Component {
 			});
 	}
 
+
 	handleHideNotification = () => {
 		this.setState({
 			showNotification: false,
@@ -166,6 +183,7 @@ class MenteeCoursesReports extends React.Component {
 			coursesReports,
 			mentees,
 		} = this.state;
+		console.log(coursesReports);
 		return (
 			<div>
 				<div>Mere Bache :</div>
@@ -173,11 +191,11 @@ class MenteeCoursesReports extends React.Component {
 					<Table className={classes.table}>
 						<TableHead>
 							<TableRow>
-								<TableCell className={classes.cell} variant="head">
+								<TableCell className={classes.tableCell} variant="head">
 									Courses
 								</TableCell>
 								{mentees.map(mentee => (
-									<TableCell className={classes.cell} variant="head" key={mentee.id}>
+									<TableCell className={classes.tableCell} variant="head" key={mentee.id}>
 										{mentee.name}
 									</TableCell>
 								))}
@@ -191,17 +209,16 @@ class MenteeCoursesReports extends React.Component {
 											pathname: '/reports/course',
 											query: {
 												courseId: courseReport.courseId,
-												courseName: courseReport.courseName,
 											},
 										}}
 									>
-										<TableCell className={classes.cell} variant="head">
+										<TableCell className={classes.tableCell} variant="head">
 											{courseReport.courseName}
 										</TableCell>
 									</Link>
 									{courseReport.mentees.map(mentee => (
 										<TableCell
-											className={classes.cell}
+											className={classes.tableCell}
 											variant="body"
 											key={`${courseReport.courseName}-${mentee.menteeId}`}
 										>
@@ -223,7 +240,7 @@ class MenteeCoursesReports extends React.Component {
 			</div>
 		);
 	}
-};
+} 
 
 MenteeCoursesReports.propTypes = {
 	classes: PropTypes.object.isRequired,
