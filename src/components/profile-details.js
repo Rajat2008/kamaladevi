@@ -34,13 +34,12 @@ class ProfileDetails extends React.Component {
   constructor(props) {
 		super(props);
     this.state = {
-      // errorText: '', value: props.value,
       nameValue:"",
       emailValue:"",
       gitValue:"",
       linkedinValue:"",
       centerValue:"",
-      graduateValue:"",
+      mediumValue:"",
 
     };
   }
@@ -69,7 +68,7 @@ class ProfileDetails extends React.Component {
                     className={classNames(classes.textField, classes.dense)}
                     margin="dense"
                 />
-                <TextField  // 1.callback functionn ,(event) => this.hanleChange(event)
+                <TextField
                     id="standard-dense"
                     label="Email"
                     onChange={this._handleTextChange("emailValue")}
@@ -80,8 +79,6 @@ class ProfileDetails extends React.Component {
                     id="standard-dense"
                     label="Github"
                     onChange={this._handleTextChange("gitValue")}
-                    // errorText= {this.state.errorText}
-                    // onChange={this.onChange.bind(this)}
                     className={classNames(classes.textField, classes.dense)}
                     margin="dense"
                 />
@@ -99,10 +96,18 @@ class ProfileDetails extends React.Component {
                     className={classNames(classes.textField, classes.dense)}
                     margin="dense"
                 />
+                {// <TextField
+                //     id="standard-dense"
+                //     label="Graduated or not"
+                //     onChange={this._handleTextChange("graduateValue")}
+                //     className={classNames(classes.textField, classes.dense)}
+                //     margin="dense"
+                // />
+              }
                 <TextField
                     id="standard-dense"
-                    label="Graduated or not"
-                    onChange={this._handleTextChange("graduateValue")}
+                    label="Medium"
+                    onChange={this._handleTextChange("mediumValue")}
                     className={classNames(classes.textField, classes.dense)}
                     margin="dense"
                 />
@@ -117,8 +122,7 @@ class ProfileDetails extends React.Component {
 //   } else {
 //     this.setState({ errorText: 'Invalid format: ###-###-####' })
 //   }
-// } //git commit -m "kuch commit detail #81" ==> have to do commit like This
-
+// }
 ProfileDetails.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
