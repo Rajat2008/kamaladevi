@@ -31,6 +31,7 @@ const styles = theme => ({
 	tableCell: {
 		// padding: theme.spacing.unit,
 		// maxWidth: theme.spacing.unit * 10,
+		minWidth: theme.spacing.unit * 15,
 		'&:last-child': {
 			// maxWidth: theme.spacing.unit * 5,
 			// padding: theme.spacing.unit,
@@ -91,7 +92,7 @@ class MenteeCourseDetailReport extends React.Component {
 	}
 
 	render() {
-		const { 
+		const {
 			classes,
 			courseInfo,
 			mentees,
@@ -111,7 +112,7 @@ class MenteeCourseDetailReport extends React.Component {
 						<TableHead>
 							<TableRow>
 								<TableCell className={classes.tableCell} variant="head">
-									Exercises Name
+								Exercises Name
 								</TableCell>
 								{mentees.map(mentee => (
 									<TableCell className={classes.tableCell} variant="head" key={mentee.id}>
@@ -132,7 +133,7 @@ class MenteeCourseDetailReport extends React.Component {
 											variant="body"
 											key={`${exerciseReport.exerciseName}-${mentee.menteeId}`}
 										>
-											<span className={classes[mentee.submissionState]}>											
+											<span className={classes[mentee.submissionState]}>
 												{exerciseSubmissionStatus(mentee.submissionState)}
 											</span>
 										</TableCell>

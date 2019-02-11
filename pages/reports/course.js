@@ -10,6 +10,7 @@ import { getMenteeExercisesTable } from '../../src/services/utils';
 import withRoot from '../../src/with-root';
 import Header from '../../src/components/header';
 import MenteeExercisesReports from '../../src/components/reports/mentee-exercises-report';
+import EdgeCase from '../../src/components/reports/edge-case';
 
 class MenteeExerciseReports extends React.Component {
 	constructor(props) {
@@ -85,6 +86,7 @@ class MenteeExerciseReports extends React.Component {
 			return (
 				<div>
 					<Header />
+					<EdgeCase />
 				</div>
 			);
 		}

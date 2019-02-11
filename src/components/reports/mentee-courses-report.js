@@ -13,7 +13,8 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { withStyles } from '@material-ui/core/styles';
 
 import AlertNotification from '../alert-notification';
-import { courseCompletedAPI } from '../../services/api';		
+import EdgeCase from './edge-case';
+import { courseCompletedAPI } from '../../services/api';
 import { findObjectIndex } from '../../services/utils';
 
 const styles = theme => ({
@@ -29,6 +30,7 @@ const styles = theme => ({
 	tableCell: {
 		padding: theme.spacing.unit,
 		maxWidth: theme.spacing.unit * 5,
+		minWidth: theme.spacing.unit * 15,
 		'&:last-child': {
 			maxWidth: theme.spacing.unit * 5,
 			padding: theme.spacing.unit,
@@ -36,19 +38,19 @@ const styles = theme => ({
 	},
 	green: {
 		color: '#64dd17',
-		maxWidth: theme.spacing.unit * 8,
+		axWidth: theme.spacing.unit * 8,
 	},
 	red: {
 		color: '#d50000',
-		maxWidth: theme.spacing.unit * 8,
+		axWidth: theme.spacing.unit * 8,
 	},
 	yellow: {
 		color: '#ffd600',
-		maxWidth: theme.spacing.unit * 8,
+		axWidth: theme.spacing.unit * 8,
 	},
 	grey: {
 		color: '#757575',
-		maxWidth: theme.spacing.unit * 8,
+		axWidth: theme.spacing.unit * 8,
 	},
 });
 
@@ -74,7 +76,7 @@ const courseStatus = (courseReport, mentee, classes) => {
 				<LinearProgress
 					variant="determinate"
 					value={100}
-					className={classes.green}
+					classes={{bar : classes.green}}
 					title={`${progressPercentage}%`}
 				/>
 			);
@@ -83,7 +85,7 @@ const courseStatus = (courseReport, mentee, classes) => {
 				<LinearProgress
 					variant="determinate"
 					value={progressPercentage}
-					className={classes[color]}
+					classes={{bar : classes.green}}
 					title={`${progressPercentage}%`}
 				/>
 			);
@@ -92,7 +94,7 @@ const courseStatus = (courseReport, mentee, classes) => {
 				<LinearProgress
 					variant="determinate"
 					value={progressPercentage}
-					className={classes.grey}
+					classes={{bar : classes.grey}}
 					title={`${progressPercentage}%`}
 				/>
 			);
@@ -176,71 +178,73 @@ class MenteeCoursesReports extends React.Component {
 	render() {
 		/* eslint-disable react/no-array-index-key */
 		const { classes } = this.props;
+		console.log(classes);
 		const {
 			showNotification,
 			notifcationMessage,
+			neitherMentorNorFacilitator,
 			variant,
 			coursesReports,
 			mentees,
 		} = this.state;
 		console.log(coursesReports);
 		return (
-			<div>
-				<div>Mere Bache :</div>
-				<Paper className={classes.root}>
-					<Table className={classes.table}>
-						<TableHead>
-							<TableRow>
-								<TableCell className={classes.tableCell} variant="head">
-									Courses
-								</TableCell>
-								{mentees.map(mentee => (
-									<TableCell className={classes.tableCell} variant="head" key={mentee.id}>
-										{mentee.name}
-									</TableCell>
-								))}
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{coursesReports.map(courseReport => (
-								<TableRow key={courseReport.courseId}>
-									<Link
-										href={{
-											pathname: '/reports/course',
-											query: {
-												courseId: courseReport.courseId,
-											},
-										}}
-									>
-										<TableCell className={classes.tableCell} variant="head">
-											{courseReport.courseName}
-										</TableCell>
-									</Link>
-									{courseReport.mentees.map(mentee => (
-										<TableCell
-											className={classes.tableCell}
-											variant="body"
-											key={`${courseReport.courseName}-${mentee.menteeId}`}
-										>
-											{courseStatus(courseReport, mentee, classes)}
-										</TableCell>
-									))}
-								</TableRow>))
-							}
-						</TableBody>
-					</Table>
-				</Paper>
-				<AlertNotification
-					open={showNotification}
-					message={notifcationMessage}
-					autoHideDuration={6000}
-					variant={variant}
-					onClose={this.handleHideNotification}
-				/>
-			</div>
-		);
+						<div>
+							<div>My Mentees :</div>
+							<Paper className={classes.root}>
+								<Table className={classes.table}>
+									<TableHead>
+										<TableRow>
+											<TableCell className={classes.tableCell} variant="head">
+												Courses
+											</TableCell>
+											{mentees.map(mentee => (
+												<TableCell className={classes.tableCell} variant="head" key={mentee.id}>
+													{mentee.name}
+												</TableCell>
+											))}
+										</TableRow>
+									</TableHead>
+									<TableBody>
+										{coursesReports.map(courseReport => (
+											<TableRow key={courseReport.courseId}>
+												<Link
+													href={{
+														pathname: '/reports/courses',
+														query: {
+															courseId: courseReport.courseId,
+														},
+													}}
+												>
+													<TableCell className={classes.tableCell} variant="head">
+														{courseReport.courseName}
+													</TableCell>
+												</Link>
+												{courseReport.mentees.map(mentee => (
+													<TableCell
+														className={classes.tableCell}
+														variant="body"
+														key={`${courseReport.courseName}-${mentee.menteeId}`}
+													>
+														{courseStatus(courseReport, mentee, classes)}
+													</TableCell>
+												))}
+											</TableRow>))
+										}
+									</TableBody>
+								</Table>
+							</Paper>
+							<AlertNotification
+								open={showNotification}
+								message={notifcationMessage}
+								autoHideDuration={6000}
+								variant={variant}
+								onClose={this.handleHideNotification}
+							/>
+						</div>
+				);
 	}
-} 
+}
 
 MenteeCoursesReports.propTypes = {
 	classes: PropTypes.object.isRequired,
